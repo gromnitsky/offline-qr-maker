@@ -14,7 +14,7 @@ chrome.contextMenus.onClicked.addListener( (info, tab) => {
 })
 
 function dialog(tab, text, retry) {
-    console.log('dialog', text)
+    console.log('dialog', text.slice(0, 20))
     chrome.tabs.sendMessage(tab.id, text, res => {
 	if (!res && !retry) {
 	    inject_content_scripts().then( ()=> {

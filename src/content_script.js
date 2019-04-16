@@ -29,17 +29,22 @@ form input[name="text"] {
   padding: 0 0.3em;
 }
 
-#container { margin: var(--gutter); }
-#qr { height: calc(var(--dialog_h) - var(--gutter)*3 - var(--form_h)); }
+#output { margin: var(--gutter); }
+#output img {
+  display: block;
+  margin: 0 auto;
+  height: calc(var(--dialog_h) - var(--gutter)*3 - var(--form_h));
+}
 </style>
 
 <dialog>
 <form>
   <input type="button" name="close" value="Close">
-  <input type="search" spellcheck="false" maxlength="2500" name="text">
+  <input type="search" spellcheck="false" maxlength="1000" name="text">
   <input type="submit" name="update">
 </form>
-<div id="container"><div id="qr"></div></div>
+<div id="output"></div>
+<div id="tmp" style="display: none"></div
 </dialog>
 `
     document.body.appendChild(dialog)
@@ -59,8 +64,9 @@ class QR {
     constructor(node) {
 	this.dialog = node.querySelector('dialog')
 	this.form = node.querySelector('form')
-	this.output = node.querySelector('#qr')
-	this.maker = new QRCode(this.output, {
+	this.output = node.querySelector('#output')
+	this.tmp = node.querySelector('#tmp')
+	this.maker = new QRCode(this.tmp, {
 	    useSVG: true, correctLevel: QRCode.CorrectLevel.L
 	})
 	this.form.onsubmit = node => { node.preventDefault(); this.update() }
@@ -70,6 +76,7 @@ class QR {
 	}
 
 	this.form.text.oninput = debounce(() => this.update_info(), 500)
+	this.max = 1000
     }
 
     toggle() { this.dialog.open ? this.dialog.close() : this.dialog.showModal() }
@@ -81,17 +88,32 @@ class QR {
 
     focus() { this.form.text.focus() }
 
-    input() { return this.form.text && this.form.text.value.trim() }
+    input() {
+	return this.form.text && this.form.text.value.trim().slice(0, this.max)
+    }
 
     update() {
-	this.input() ? this.maker.makeCode(this.input()) : this.output.innerHTML = 'No input'
-	this.output.removeAttribute('title')
+	if (!this.input()) { this.output.innerHTML = 'No input'; return }
+
+	this.maker.makeCode(this.input())
+	let svg = this.tmp.innerHTML.replace(/^<svg /, '<svg xmlns="http://www.w3.org/2000/svg" ')
+	this.output.innerHTML = img_b64(svg)
 	this.update_info()
     }
 
     update_info() {
 	this.form.update.value = `Update (${this.input().length})`
     }
+}
+
+function img_b64(svg) {
+    return `<img src='data:image/svg+xml;base64,${b64(svg)}'>`
+}
+
+function b64(str) {
+    return btoa(encodeURIComponent(str)
+		.replace(/%([0-9A-F]{2})/g,
+			 (match, p1) => String.fromCharCode('0x' + p1)))
 }
 
 function debounce(fn, ms = 0) {
