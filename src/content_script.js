@@ -51,12 +51,12 @@ form input[name="text"] {
 
     let qr = new QR(dialog.shadowRoot)
     chrome.runtime.onMessage.addListener( (req, sender, res) => {
+	res(true)
 	console.log('pong', sender.id)
+
 	qr.toggle()
 	qr.text = req
 	qr.focus()
-
-	res(true)
     })
 }
 

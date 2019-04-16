@@ -5,7 +5,7 @@ chrome.runtime.onInstalled.addListener(() => {
     console.info('add a menu item')
     chrome.contextMenus.create({
 	"id": "0",
-	"title": "Make a QR code",
+	"title": "Make QR code",
 	"contexts": ["link", 'image', 'selection']
     })
 })
@@ -16,10 +16,8 @@ chrome.contextMenus.onClicked.addListener( (info, tab) => {
 function dialog(tab, text, retry) {
     console.log('dialog', text.slice(0, 20))
     chrome.tabs.sendMessage(tab.id, text, res => {
-	if (!res && !retry) {
-	    inject_content_scripts().then( ()=> {
-		setTimeout( () => dialog(tab, text, true), 100) // FIXME
-	    })
+	if (!res && !retry) {	// repeat only once
+	    inject_content_scripts().then( ()=> dialog(tab, text, true))
 	}
     })
 }
