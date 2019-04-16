@@ -8,5 +8,6 @@
 	"persistent": false,
 	"scripts": ["event_page.js"]
     },
-    "browser_action": {}
+    "browser_action": {},
+    "offline_enabled": true
 }

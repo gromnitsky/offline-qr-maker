@@ -4,28 +4,51 @@
 console.log('offline-qr-maker')
 
 function main() {
-    let dialog = document.createElement('dialog')
-    dialog.className = 'JiA134qZm1'
-    dialog.innerHTML = `
+    let dialog = document.createElement('span')
+    dialog.attachShadow({mode: 'open'}).innerHTML = `
+<style>
+dialog {
+  --gutter: 10px;
+  --dialog_h: 90vh;
+  --dialog_w: 90vw;
+  --form_h: 1.5em;
+  font-family: sans-serif;
+  height: var(--dialog_h);
+  width: var(--dialog_w);
+  padding: 0;
+}
+
+form {
+  display: flex;
+  margin: var(--gutter);
+  height: var(--form_h);
+}
+form input[name="text"] {
+  margin: 0 calc(var(--gutter)/2);
+  flex: 1;
+  padding: 0 0.3em;
+}
+
+#container { margin: var(--gutter); }
+#qr { height: calc(var(--dialog_h) - var(--gutter)*3 - var(--form_h)); }
+</style>
+
+<dialog>
 <form>
-<input type="button" name="close" value="Close">
-<input type="search" name="text">
-<input type="submit" value="Update">
+  <input type="button" name="close" value="Close">
+  <input type="search" spellcheck="false" name="text">
+  <input type="submit" value="Update">
 </form>
 <div id="container"><div id="qr"></div></div>
+</dialog>
 `
     document.body.appendChild(dialog)
 
-    let qr = new QR(dialog)
-    message_hooks(qr)
-}
-
-function message_hooks(qr) {
+    let qr = new QR(dialog.shadowRoot)
     chrome.runtime.onMessage.addListener( (req, sender, res) => {
 	console.log('pong', sender.id)
-	qr.dialog.open || qr.dialog.showModal()
-	qr.form.text.value = req
-	qr.update()
+	qr.toggle()
+	qr.text = req
 	qr.focus()
 
 	res(true)
@@ -33,20 +56,25 @@ function message_hooks(qr) {
 }
 
 class QR {
-    constructor(dialog) {
-	this.dialog = dialog
-	this.form = dialog.querySelector('form')
-	this.output = dialog.querySelector('#qr')
+    constructor(node) {
+	this.dialog = node.querySelector('dialog')
+	this.form = node.querySelector('form')
+	this.output = node.querySelector('#qr')
 	this.maker = new QRCode(this.output, {
-	    width: 10,
-	    height: 10,
-	    useSVG: true
+	    width: 10, height: 10, useSVG: true
 	})
 	this.form.onsubmit = node => { node.preventDefault(); this.update() }
-	this.form.close.onclick = () => dialog.close()
+	this.form.close.onclick = () => this.toggle()
 	this.form.text.onkeydown = evt => {
-	    evt.key === 'Escape' && !this.input() && dialog.close()
+	    evt.key === 'Escape' && !this.input() && this.toggle()
 	}
+    }
+
+    toggle() { this.dialog.open ? this.dialog.close() : this.dialog.showModal() }
+
+    set text(val) {
+	this.form.text.value = val
+	this.update()
     }
 
     focus() { this.form.text.focus() }
@@ -54,8 +82,8 @@ class QR {
     input() { return this.form.text && this.form.text.value.trim() }
 
     update() {
-	if (!this.input()) { this.output.innerHTML = 'No input'; return }
-	this.maker.makeCode(this.input())
+	this.input() ? this.maker.makeCode(this.input()) : this.output.innerHTML = 'No input'
+	this.output.removeAttribute('title')
     }
 }
 

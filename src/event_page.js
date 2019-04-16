@@ -14,21 +14,15 @@ function dialog(tab, retry) {
 }
 
 function inject_content_scripts() {
-    return inject_css('content_script.css')
-	.then( () => {
-	    inject_js('vendor/@keeex/qrcodejs-kx/qrcode.min.js')
-	}).then( () => {
-	    inject_js('content_script.js')
-	})
+    return ['vendor/@keeex/qrcodejs-kx/qrcode.min.js', 'content_script.js']
+	.reduce( (a, c) => a.then(() => inject_js(c)), Promise.resolve())
 }
 
-function inject(type, file) {
+function inject_js(file) {
     return new Promise( (res, rej) => {
-	chrome.tabs[type]({file}, () => {
+	chrome.tabs.executeScript({file}, () => {
+	    console.log('executeScript', file)
 	    chrome.runtime.lastError ? rej(chrome.runtime.lastError) : res(true)
 	})
     })
 }
-
-function inject_js(file) { return inject('executeScript', file) }
-function inject_css(file) { return inject('insertCSS', file) }
