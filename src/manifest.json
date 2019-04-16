@@ -9,5 +9,6 @@
 	"scripts": ["event_page.js"]
     },
     "browser_action": {},
-    "offline_enabled": true
+    "offline_enabled": true,
+    "icons": { "128": "icon128.png" }
 }
