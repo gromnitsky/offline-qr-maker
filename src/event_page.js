@@ -23,7 +23,7 @@ function dialog(tab, text, retry) {
 }
 
 function inject_content_scripts() {
-    return ['vendor/@keeex/qrcodejs-kx/qrcode.min.js', 'content_script.js']
+    return ['vendor/qrcode-generator/qrcode.js', 'content_script.js']
 	.reduce( (a, c) => a.then(() => inject_js(c)), Promise.resolve())
 }
 

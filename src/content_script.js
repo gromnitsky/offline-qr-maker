@@ -1,4 +1,4 @@
-/* global QRCode */
+/* global qrcode */
 'use strict'
 
 console.log('offline-qr-maker')
@@ -44,7 +44,6 @@ form input[name="text"] {
   <input type="submit" name="update">
 </form>
 <div id="output"></div>
-<div id="tmp" style="display: none"></div
 </dialog>
 `
     document.body.appendChild(dialog)
@@ -65,10 +64,7 @@ class QR {
 	this.dialog = node.querySelector('dialog')
 	this.form = node.querySelector('form')
 	this.output = node.querySelector('#output')
-	this.tmp = node.querySelector('#tmp')
-	this.maker = new QRCode(this.tmp, {
-	    useSVG: true, correctLevel: QRCode.CorrectLevel.L
-	})
+
 	this.form.onsubmit = node => { node.preventDefault(); this.update() }
 	this.form.close.onclick = () => this.toggle()
 	this.form.text.onkeydown = evt => {
@@ -95,9 +91,16 @@ class QR {
     update() {
 	if (!this.input()) { this.output.innerHTML = 'No input'; return }
 
-	this.maker.makeCode(this.input())
-	let svg = this.tmp.innerHTML.replace(/^<svg /, '<svg xmlns="http://www.w3.org/2000/svg" ')
-	this.output.innerHTML = img_b64(svg)
+	qrcode.stringToBytes = qrcode.stringToBytesFuncs['UTF-8']
+	let qr = qrcode(0, 'L')
+	qr.addData(this.input())
+	try {
+	    qr.make()
+	} catch (err) {
+	    this.output.innerHTML = err
+	    return
+	}
+	this.output.innerHTML = img_b64(qr.createSvgTag(10, 0))
 	this.update_info()
     }
 

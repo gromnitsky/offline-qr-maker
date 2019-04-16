@@ -1,5 +1,5 @@
 {
     "dependencies": {
-        "@keeex/qrcodejs-kx": "^1.0.2"
+        "qrcode-generator": "^1.4.3"
     }
 }
