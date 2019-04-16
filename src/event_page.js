@@ -6,11 +6,11 @@ chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
 	"id": "0",
 	"title": "Make a QR code",
-	"contexts": ["link", 'image']
+	"contexts": ["link", 'image', 'selection']
     })
 })
 chrome.contextMenus.onClicked.addListener( (info, tab) => {
-    dialog(tab, info.linkUrl || info.srcUrl)
+    dialog(tab, info.selectionText || info.linkUrl || info.srcUrl)
 })
 
 function dialog(tab, text, retry) {

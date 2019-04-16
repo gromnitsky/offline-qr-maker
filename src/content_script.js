@@ -36,7 +36,7 @@ form input[name="text"] {
 <dialog>
 <form>
   <input type="button" name="close" value="Close">
-  <input type="search" spellcheck="false" name="text">
+  <input type="search" spellcheck="false" maxlength="2500" name="text">
   <input type="submit" name="update">
 </form>
 <div id="container"><div id="qr"></div></div>
