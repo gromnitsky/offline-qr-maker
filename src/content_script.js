@@ -37,7 +37,7 @@ form input[name="text"] {
 <form>
   <input type="button" name="close" value="Close">
   <input type="search" spellcheck="false" name="text">
-  <input type="submit" value="Update">
+  <input type="submit" name="update">
 </form>
 <div id="container"><div id="qr"></div></div>
 </dialog>
@@ -61,13 +61,15 @@ class QR {
 	this.form = node.querySelector('form')
 	this.output = node.querySelector('#qr')
 	this.maker = new QRCode(this.output, {
-	    width: 10, height: 10, useSVG: true
+	    useSVG: true, correctLevel: QRCode.CorrectLevel.L
 	})
 	this.form.onsubmit = node => { node.preventDefault(); this.update() }
 	this.form.close.onclick = () => this.toggle()
 	this.form.text.onkeydown = evt => {
 	    evt.key === 'Escape' && !this.input() && this.toggle()
 	}
+
+	this.form.text.oninput = debounce(() => this.update_info(), 500)
     }
 
     toggle() { this.dialog.open ? this.dialog.close() : this.dialog.showModal() }
@@ -84,6 +86,19 @@ class QR {
     update() {
 	this.input() ? this.maker.makeCode(this.input()) : this.output.innerHTML = 'No input'
 	this.output.removeAttribute('title')
+	this.update_info()
+    }
+
+    update_info() {
+	this.form.update.value = `Update (${this.input().length})`
+    }
+}
+
+function debounce(fn, ms = 0) {
+    let id
+    return function(...args) {
+	clearTimeout(id)
+	id = setTimeout(() => fn.apply(this, args), ms)
     }
 }
 

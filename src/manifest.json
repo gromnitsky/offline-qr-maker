@@ -3,7 +3,7 @@
     "name": "Offline QR Maker",
     "description": "A tiny offline QR codes generator; no tracking, minimal permissions",
     "version": "0.0.1",
-    "permissions": ["activeTab"],
+    "permissions": ["activeTab", "contextMenus"],
     "background": {
 	"persistent": false,
 	"scripts": ["event_page.js"]

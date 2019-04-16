@@ -1,13 +1,24 @@
 'use strict'
 
-chrome.browserAction.onClicked.addListener(dialog)
+chrome.browserAction.onClicked.addListener( tab => dialog(tab, tab.url))
+chrome.runtime.onInstalled.addListener(() => {
+    console.info('add a menu item')
+    chrome.contextMenus.create({
+	"id": "0",
+	"title": "Make a QR code",
+	"contexts": ["link", 'image']
+    })
+})
+chrome.contextMenus.onClicked.addListener( (info, tab) => {
+    dialog(tab, info.linkUrl || info.srcUrl)
+})
 
-function dialog(tab, retry) {
-    console.log('click', tab.url)
-    chrome.tabs.sendMessage(tab.id, tab.url, res => {
+function dialog(tab, text, retry) {
+    console.log('dialog', text)
+    chrome.tabs.sendMessage(tab.id, text, res => {
 	if (!res && !retry) {
 	    inject_content_scripts().then( ()=> {
-		setTimeout( () => dialog(tab, true), 100) // FIXME
+		setTimeout( () => dialog(tab, text, true), 100) // FIXME
 	    })
 	}
     })
