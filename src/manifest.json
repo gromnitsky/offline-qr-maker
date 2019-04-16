@@ -1,0 +1,12 @@
+{
+    "manifest_version": 2,
+    "name": "Offline QR Maker",
+    "description": "A tiny offline QR codes generator; no tracking, minimal permissions",
+    "version": "0.0.1",
+    "permissions": ["activeTab"],
+    "background": {
+	"persistent": false,
+	"scripts": ["event_page.js"]
+    },
+    "browser_action": {}
+}
