@@ -43,15 +43,12 @@ class Dialog {
 	let ctrl = {
 	    submit: () => btn_submit.click(),
 	    close: this.$('#ctrl__close'),
-	    size: {
-		cur: this.$('#ctrl__size-cur'),
-		max: this.$('#ctrl__size-max')
-	    },
+	    size: this.$('#ctrl__size'),
 	    // TODO: next 4 save/get their values to/from storage
-	    type_num: form.type_num,
-	    corr_lev: form.corr_lev,
-	    mode: form.mode,
-	    multibyte: form.multibyte
+	    type_num: this.$('#type_num'),
+	    corr_lev: this.$('#corr_lev'),
+	    mode: this.$('#mode'),
+	    multibyte: this.$('#multibyte'),
 	}
 
 	ctrl.close.onclick = () => this.toggle()
@@ -81,8 +78,7 @@ class Dialog {
     }
 
     _submit() {
-	this.ctrl.size.cur.innerText = this.input.value.length
-	this.ctrl.size.max.innerText = this.max()
+	this.ctrl.size.innerText = `${this.input.value.length}/${this.max()}`
 	if (!this.input.value.length) { this.err('no input'); return }
 
 	qrcode.stringToBytes = qrcode.stringToBytesFuncs[this.ctrl.multibyte.value]

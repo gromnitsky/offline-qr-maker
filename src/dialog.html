@@ -1,55 +1,50 @@
 <dialog>
-  <div>
-    <form>
-      <div id="ctrl">
-	<input type="button" id="ctrl__close" value="Close">
-	
-	<span>
-	  <span id="ctrl__size-cur">?</span>/<span id="ctrl__size-max">?</span>
-	</span>
+  <form>
+    <div id="ctrl">
+      <input type="button" id="ctrl__close" value="Close">
 
-	<label for="type_num">Type number:</label>
-	<input name="type_num" type="number"
-	       min="0" max="40" value="0" required
-	       title="Use 0 if unsure">
+      <span id="ctrl__size">?/?</span>
 
-	<label for="corr_lev">Error correction:</label>
-	<select name="corr_lev">
-	  <option value="L" selected>L, 7%</option>
-	  <option value="M">M, 15%</option>
-	  <option value="Q">Q, 25%</option>
-	  <option value="H">H, 30%</option>
-	</select>
-	
-	<label for="mode">Mode:</label>
-	<select name="mode">
-	  <option value="Numeric">Numeric</option>
-	  <option value="Alphanumeric">Alphanumeric</option>
-	  <option value="Byte" selected>Byte</option>
-	  <option value="Kanji">Kanji</option>
-	</select>
+      <label for="type_num">Type number:</label>
+      <input id="type_num" type="number" min="0" max="40" value="0" required
+	     title="Use 0 if unsure">
 
-	<label for="multibyte">Multibyte:</label>
-	<select name="multibyte">
-	  <option value="default">None</option>
-	  <option value="SJIS">SJIS</option>
-	  <option value="UTF-8" selected=>UTF-8</option>
-	</select>
-      </div>
+      <label for="corr_lev">Error correction:</label>
+      <select id="corr_lev">
+	<option value="L" selected>L, 7%</option>
+	<option value="M">M, 15%</option>
+	<option value="Q">Q, 25%</option>
+	<option value="H">H, 30%</option>
+      </select>
 
-      <textarea id="input" spellcheck="false" required></textarea>
-      <input type="submit" style="display: none">
-    </form>
+      <label for="mode">Mode:</label>
+      <select id="mode">
+	<option value="Numeric">Numeric</option>
+	<option value="Alphanumeric">Alphanumeric</option>
+	<option value="Byte" selected>Byte</option>
+	<option value="Kanji">Kanji</option>
+      </select>
 
-    <div id="output"></div>
-  </div>
+      <label for="multibyte">Multibyte:</label>
+      <select id="multibyte">
+	<option value="default">None</option>
+	<option value="SJIS">SJIS</option>
+	<option value="UTF-8" selected=>UTF-8</option>
+      </select>
+    </div>
+
+    <textarea id="input" spellcheck="false" required></textarea>
+    <input type="submit" style="display: none">
+  </form>
+
+  <div id="output"></div>
 </dialog>
 
 <style>
   * {
     box-sizing: border-box;
   }
-  
+
   dialog {
     --gutter: 5px;
     --dlg_h: 100vh;
@@ -57,7 +52,7 @@
     --input_h: 4em;
     --form_h: calc(var(--ctrl_h) + var(--input_h));
     --output_h: calc(var(--dlg_h) - var(--form_h) - var(--gutter)*3);
-    
+
     font-family: sans-serif;
     height: var(--dlg_h);
     padding: var(--gutter);
@@ -76,11 +71,11 @@
     flex-direction: column;
     justify-content: space-between;
   }
-  
+
   #ctrl {
     height: var(--ctrl_h);
   }
-  
+
   #input {
     height: var(--input_h);
     resize: none;
