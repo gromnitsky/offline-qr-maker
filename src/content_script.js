@@ -36,6 +36,8 @@ class Dialog {
 
     _ctrl_setup() {
 	let form = this.$('form')
+	form.onsubmit = evt => evt.preventDefault() // do nothing
+
 	let ctrl = {
 	    close: this.$('#ctrl__close'),
 	    size: {
@@ -92,7 +94,10 @@ class Dialog {
 	this.output.innerHTML = img_b64(qr.createSvgTag(10, 0))
     }
 
-    err(msg) { this.output.innerText = 'Error: ' + msg }
+    err(m) {
+	this.output.innerText = (m instanceof Error ? '' : 'Error: ') + m
+	console.error('offline-qr-maker:', m)
+    }
 
     max() {
 	return this._max(Number(this.ctrl.type_num.value),
