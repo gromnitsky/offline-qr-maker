@@ -10,5 +10,6 @@
     },
     "browser_action": {},
     "offline_enabled": true,
-    "icons": { "128": "icon128.png" }
+    "icons": { "128": "icon128.png" },
+    "web_accessible_resources": ["dialog.html"]
 }

@@ -8,7 +8,7 @@ all:
 compile.all :=
 
 $(ext)/vendor/%: node_modules/%; $(copy)
-compile.all += $(addprefix $(ext)/vendor/, qrcode-generator/qrcode.js)
+compile.all += $(addprefix $(ext)/vendor/, qrcode-generator/qrcode.js qrcode-generator/qrcode_SJIS.js)
 
 $(ext)/%: src/%; $(copy)
 compile.all += $(patsubst src/%, $(ext)/%, $(wildcard src/*))

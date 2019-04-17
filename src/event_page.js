@@ -23,7 +23,9 @@ function dialog(tab, text, retry) {
 }
 
 function inject_content_scripts() {
-    return ['vendor/qrcode-generator/qrcode.js', 'content_script.js']
+    return ['vendor/qrcode-generator/qrcode.js',
+	    'vendor/qrcode-generator/qrcode_SJIS.js',
+	    'content_script.js']
 	.reduce( (a, c) => a.then(() => inject_js(c)), Promise.resolve())
 }
 
