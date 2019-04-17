@@ -2,19 +2,19 @@
 'use strict'
 
 function main() {
+    let dialog = fetch_txt(chrome.runtime.getURL('dialog.html')).then( html => {
+	return new Dialog(html)
+    })
+
     chrome.runtime.onMessage.addListener( (req, sender, res) => {
 	res(true)
 	console.log('pong', sender.id)
 
-	fetch_txt(chrome.runtime.getURL('dialog.html'))
-	    .then( html => dialog(html, req))
+	dialog.then( dlg => {
+	    dlg.value = req
+	    dlg.toggle()
+	})
     })
-}
-
-function dialog(html, req) {
-    let dlg = new Dialog(html)
-    dlg.value = req
-    dlg.toggle()
 }
 
 class Dialog {
