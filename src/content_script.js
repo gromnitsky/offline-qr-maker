@@ -11,8 +11,8 @@ function main() {
 	console.log('pong', sender.id)
 
 	dialog.then( dlg => {
-	    dlg.value = req
 	    dlg.toggle()
+	    dlg.value = req
 	})
     })
 }
@@ -36,9 +36,12 @@ class Dialog {
 
     _ctrl_setup() {
 	let form = this.$('form')
-	form.onsubmit = evt => evt.preventDefault() // do nothing
+	form.onsubmit = evt => (evt.preventDefault(), this._submit())
+	form.addEventListener('invalid', () => this.output.innerText = '', true)
+	let btn_submit = this.$('input[type="submit"]')
 
 	let ctrl = {
+	    submit: () => btn_submit.click(),
 	    close: this.$('#ctrl__close'),
 	    size: {
 		cur: this.$('#ctrl__size-cur'),
@@ -52,12 +55,12 @@ class Dialog {
 	}
 
 	ctrl.close.onclick = () => this.toggle()
-	ctrl.type_num.oninput = () => this.update()
+	ctrl.type_num.oninput = () => ctrl.submit()
 	;['corr_lev','mode','multibyte'].forEach( v => {
-	    ctrl[v].onchange = () => this.update()
+	    ctrl[v].onchange = () => ctrl.submit()
 	})
 
-	let upd = debounce(() => this.update(), 500)
+	let upd = debounce(() => ctrl.submit(), 500)
 	this.input.oninput = () => upd()
 	this.input.onkeydown = evt => {
 	    if (evt.ctrlKey && evt.key === 'c') this.value = ''
@@ -74,10 +77,10 @@ class Dialog {
 
     set value(val) {
 	this.input.value = val
-	this.update()
+	this.ctrl.submit()
     }
 
-    update() {
+    _submit() {
 	this.ctrl.size.cur.innerText = this.input.value.length
 	this.ctrl.size.max.innerText = this.max()
 	if (!this.input.value.length) { this.err('no input'); return }
