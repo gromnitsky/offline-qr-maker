@@ -13,7 +13,7 @@ selections or user input.
   Arase](https://github.com/kazuhikoarase/qrcode-generator/tree/master/js);
 * a non-persistent bg page.
 
-![a screen shot](https://ultraimg.com/images/2019/04/17/ZcrT.png)
+![a screen shot](https://ultraimg.com/images/2019/04/18/ZcMZ.png)
 
 ## Compilation
 
