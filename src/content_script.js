@@ -57,14 +57,18 @@ class Dialog {
 	    ctrl[v].onchange = () => ctrl.submit()
 	})
 
-	let upd = debounce(() => ctrl.submit(), 500)
-	this.input.oninput = () => upd()
+	let upd = debounce(() => ctrl.submit(), 300)
+	this.input.addEventListener('input', () => upd())
+	let stat = debounce(() => this.stat_upd(), 300)
+	this.input.addEventListener('input', () => stat())
 	this.input.onkeydown = evt => {
 	    if (evt.ctrlKey && evt.key === 'c') this.value = ''
 	}
 
 	return ctrl
     }
+
+    stat_upd() { this.ctrl.size.innerText = `${this.size.length}/${this.max()}` }
 
     toggle() {
 	if (this.dlg.open) { this.dlg.close(); return }
@@ -74,13 +78,11 @@ class Dialog {
 
     set value(val) {
 	this.input.value = val
+	this.stat_upd()
 	this.ctrl.submit()
     }
 
     _submit() {
-	this.ctrl.size.innerText = `${this.size.length}/${this.max()}`
-	if (!this.input.value.length) { this.err('no input'); return }
-
 	qrcode.stringToBytes = qrcode.stringToBytesFuncs[this.ctrl.multibyte.value]
 	let qr = qrcode(Number(this.ctrl.type_num.value), this.ctrl.corr_lev.value)
 	qr.addData(this.input.value, this.ctrl.mode.value)
