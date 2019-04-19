@@ -78,7 +78,7 @@ class Dialog {
     }
 
     _submit() {
-	this.ctrl.size.innerText = `${this.input.value.length}/${this.max()}`
+	this.ctrl.size.innerText = `${this.size.length}/${this.max()}`
 	if (!this.input.value.length) { this.err('no input'); return }
 
 	qrcode.stringToBytes = qrcode.stringToBytesFuncs[this.ctrl.multibyte.value]
@@ -91,6 +91,10 @@ class Dialog {
 	    return
 	}
 	this.output.innerHTML = img_b64(qr.createSvgTag(10, 0))
+    }
+
+    get size() { // what about SJIS?
+	return this.ctrl.multibyte.value === 'UTF-8' ? new TextEncoder().encode(this.input.value) : this.input.value
     }
 
     err(m) {
