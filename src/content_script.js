@@ -54,7 +54,7 @@ class Dialog {
 	ctrl.close.onclick = () => this.toggle()
 	ctrl.type_num.oninput = () => ctrl.submit()
 	;['corr_lev','mode','multibyte'].forEach( v => {
-	    ctrl[v].onchange = () => ctrl.submit()
+	    ctrl[v].onchange = () => (this.stat_upd(), ctrl.submit())
 	})
 
 	let upd = debounce(() => ctrl.submit(), 300)
