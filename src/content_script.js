@@ -52,7 +52,7 @@ class Dialog {
 	}
 
 	ctrl.close.onclick = () => this.toggle()
-	ctrl.type_num.oninput = () => ctrl.submit()
+	ctrl.type_num.oninput = () => (this.stat_upd(), ctrl.submit())
 	;['corr_lev','mode','multibyte'].forEach( v => {
 	    ctrl[v].onchange = () => (this.stat_upd(), ctrl.submit())
 	})
