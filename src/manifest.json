@@ -1,15 +1,20 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "Offline QR Maker",
-    "description": "A tiny offline QR codes generator; no tracking, minimal permissions",
-    "version": "0.0.5",
-    "permissions": ["activeTab", "contextMenus"],
+    "description": "A offline QR codes generator (URLs, text selections, user input); no tracking, minimal permissions",
+    "version": "1.0.0",
+    "permissions": ["activeTab", "scripting", "contextMenus"],
     "background": {
-	"persistent": false,
-	"scripts": ["event_page.js"]
+        "type": "module",
+        "service_worker": "service_worker.js"
     },
-    "browser_action": {},
     "offline_enabled": true,
     "icons": { "128": "icon128.png" },
-    "web_accessible_resources": ["dialog.html"]
+    "action": {},
+    "web_accessible_resources": [
+        {
+            "resources": ["dialog.html"],
+            "matches": ["<all_urls>"]
+        }
+    ]
 }

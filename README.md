@@ -1,17 +1,16 @@
 # Offline QR Maker
 
-(Download the .crx file
-[here](http://gromnitsky.users.sourceforge.net/js/chrome/).)
+* [Chrome Web Store](https://chromewebstore.google.com/detail/offline-qr-maker/ialnkjojemdpiilocpkjemabpfplgina)
+* [.crx file](http://gromnitsky.users.sourceforge.net/js/chrome/)
 
-A Chrome 73+ extension for generating QR codes from urls, text
-selections or user input.
+A browser extension (manifest v3) for generating QR codes (offline)
+from URLs, text selections or arbitrary user input.
 
-* `activeTab` permission, instead of `<all_urls>`;
-* user can save an svg of a qr code;
+* QR code is an SVG & can be saved to a file;
 * a responsive modal dialog;
 * uses a canonical `qrcode-generator` lib from [Kazuhiko
   Arase](https://github.com/kazuhikoarase/qrcode-generator/tree/master/js);
-* a non-persistent bg page.
+* `activeTab` permission, instead of `<all_urls>`.
 
 ![a screen shot](https://ultraimg.com/images/2019/04/18/ZcMZ.png)
 
