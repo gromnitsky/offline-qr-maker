@@ -35,6 +35,11 @@ class Dialog {
     $(sel) { return this.dlg.querySelector(sel) }
 
     _ctrl_setup() {
+        this.dlg.addEventListener('keydown', evt => {
+            // prevent the event from reaching the document
+            evt.stopPropagation()
+        })
+
 	let form = this.$('form')
 	form.onsubmit = evt => (evt.preventDefault(), this._submit())
 	form.addEventListener('invalid', () => this.output.innerText = '', true)

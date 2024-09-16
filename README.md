@@ -24,10 +24,6 @@ $ make crx
 
 The result should be in `_out` dir.
 
-## Bugs
-
-* Instagram blocks dialog controls.
-
 ## License
 
 MIT.
