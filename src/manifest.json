@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
     "name": "Offline QR Maker",
-    "description": "A offline QR codes generator (URLs, text selections, user input); no tracking, minimal permissions",
-    "version": "1.0.0",
+    "description": "An offline SVG QR code generator (from URLs, text selections, user input); no tracking, minimal permissions",
+    "version": "1.0.1",
     "permissions": ["activeTab", "scripting", "contextMenus"],
     "background": {
         "type": "module",
