@@ -17,8 +17,7 @@ URLs, text selections or arbitrary user input.
 ## Compilation
 
 ~~~
-$ npm -g i json crx3-utils
-$ npm i
+$ sudo dnf install jq jsonnet
 $ make crx
 ~~~
 
