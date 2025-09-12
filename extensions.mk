@@ -27,4 +27,4 @@ $(pkg).crx: _out/private.pem $(dest)
 	mv $(out)/ext.crx $(pkg).crx
 
 upload: $(pkg).crx
-	scp $< gromnitsky@web.sourceforge.net:/home/user-web/gromnitsky/htdocs/js/chrome/
+	rsync $< alex@sigwait.org:/home/alex/public_html/demo/chrome/ $(o)

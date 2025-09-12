@@ -1,7 +1,7 @@
 # Offline QR Maker
 
 * [Chrome Web Store](https://chromewebstore.google.com/detail/offline-qr-maker/ialnkjojemdpiilocpkjemabpfplgina)
-* [.crx file](http://gromnitsky.users.sourceforge.net/js/chrome/)
+* [.crx file](https://sigwait.org/~alex/demo/chrome/)
 
 A browser extension (manifest v3) for generating QR codes offline from
 URLs, text selections or arbitrary user input.
