@@ -48,6 +48,7 @@ class Dialog {
 	let ctrl = {
 	    submit: () => btn_submit.click(),
 	    close: this.$('#ctrl__close'),
+	    clear: this.$('#ctrl__clear'),
 	    size: this.$('#ctrl__size'),
 	    // TODO: next 4 save/get their values to/from storage
 	    type_num: this.$('#type_num'),
@@ -57,6 +58,10 @@ class Dialog {
 	}
 
 	ctrl.close.onclick = () => this.toggle()
+        ctrl.clear.onclick = () => {
+            this.input.select()
+            document.execCommand('delete') // preserve undo stack
+        }
 	ctrl.type_num.oninput = () => (this.stat_upd(), ctrl.submit())
 	;['corr_lev','mode','multibyte'].forEach( v => {
 	    ctrl[v].onchange = () => (this.stat_upd(), ctrl.submit())
@@ -66,9 +71,6 @@ class Dialog {
 	this.input.addEventListener('input', () => upd())
 	let stat = debounce(() => this.stat_upd(), 300)
 	this.input.addEventListener('input', () => stat())
-	this.input.onkeydown = evt => {
-	    if (evt.ctrlKey && evt.key === 'c') this.value = ''
-	}
 
 	return ctrl
     }
